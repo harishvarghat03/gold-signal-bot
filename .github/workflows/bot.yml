@@ -1,9 +1,6 @@
 name: Gold Signal Bot
 
 on:
- on:
-  # schedule:
-  #   - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -11,17 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
       - name: Install dependencies
         run: |
           pip install pandas numpy requests
           pip install --upgrade --no-cache-dir git+https://github.com/rongardF/tvdatafeed.git
-      
       - name: Run bot
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
