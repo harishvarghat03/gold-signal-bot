@@ -72,17 +72,17 @@ if sig == "BUY" or sig == "SELL":
     entry_high = round(p + 1.0, 2)
 
     if sig == "BUY":
-        direction = "XAUUSD long Now \U0001F7E2"
+        header = "XAUUSD LONG NOW \U0001F7E2"
         sl = round(p - atr*1.0, 2)
         tp1 = round(p + atr*1.5, 2)
         tp2 = round(p + atr*2.0, 2)
     else:
-        direction = "XAUUSD short Now \U0001F534"
+        header = "XAUUSD SHORT NOW \U0001F534"
         sl = round(p + atr*1.0, 2)
         tp1 = round(p - atr*1.5, 2)
         tp2 = round(p - atr*2.0, 2)
 
-    msg = (direction + "\n\n" +
+    msg = ("\U0001F4CA " + header + "\n\n" +
            "\U0001F539 Entry : " + str(entry_low) + " - " + str(entry_high) + "\n" +
            "\u2705 TP 1: " + str(tp1) + "\n" +
            "\u2705 TP 2: " + str(tp2) + "\n\n" +
