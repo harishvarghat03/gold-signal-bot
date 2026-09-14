@@ -54,21 +54,10 @@ atr = (d['high'] - d['low']).rolling(14).mean().iloc[-1]
 p = d['close'].iloc[-1]
 
 sig = "HOLD"
-sl = tp1 = tp2 = 0
-
 if total >= 3 and vol_ok and p > vwap_val:
     sig = "BUY"
 elif total <= -3 and vol_ok and p < vwap_val:
     sig = "SELL"
-
-if sig == "BUY":
-    sl = p - atr*1.5
-    tp1 = p + atr*2.0
-    tp2 = p + atr*3.0
-elif sig == "SELL":
-    sl = p + atr*1.5
-    tp1 = p - atr*2.0
-    tp2 = p - atr*3.0
 
 print("Scores: 1D " + str(s1) + " 4H " + str(s4) + " 1H " + str(s1h) + " 15m " + str(s15))
 print("Total: " + str(total))
@@ -79,12 +68,25 @@ print("Price: " + str(round(p, 2)))
 
 # --- SEND TELEGRAM ONLY IF BUY OR SELL ---
 if sig == "BUY" or sig == "SELL":
-    direction = "GREEN" if sig == "BUY" else "RED"
-    msg = ("*ITDA Signal: " + sig + "*\n" +
-           "Price: " + str(round(p, 2)) + "\n" +
-           "SL: " + str(round(sl, 2)) + "\n" +
-           "TP1: " + str(round(tp1, 2)) + "\n" +
-           "TP2: " + str(round(tp2, 2)))
+    entry_low = round(p, 2)
+    entry_high = round(p + 1.0, 2)
+
+    if sig == "BUY":
+        direction = "XAUUSD long Now \U0001F7E2"
+        sl = round(p - atr*1.0, 2)
+        tp1 = round(p + atr*1.5, 2)
+        tp2 = round(p + atr*2.0, 2)
+    else:
+        direction = "XAUUSD short Now \U0001F534"
+        sl = round(p + atr*1.0, 2)
+        tp1 = round(p - atr*1.5, 2)
+        tp2 = round(p - atr*2.0, 2)
+
+    msg = (direction + "\n\n" +
+           "\U0001F539 Entry : " + str(entry_low) + " - " + str(entry_high) + "\n" +
+           "\u2705 TP 1: " + str(tp1) + "\n" +
+           "\u2705 TP 2: " + str(tp2) + "\n\n" +
+           "\u274C SL: " + str(sl))
     send_telegram(msg)
 else:
     print("HOLD - no Telegram sent.")
